@@ -1,0 +1,28 @@
+.topSection {
+    position: relative;
+}
+.topSectionImage {
+    width: 100%;
+}
+.card {
+    font-family: 'mugglenewsregular';
+    background-color: rgba(93, 109, 91, 0.79);
+    color: #fff;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+}
+
+.card h1 {
+    font-size: 2.8rem;
+}
+.card p {
+    font-size: 2rem;
+}
+.topSectionContent {
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+}
