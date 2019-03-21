@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Admin } from '../views';
+import { Home, Admin, Login } from '../views';
 
 const routeArray = [
     {
@@ -13,13 +13,18 @@ const routeArray = [
         component: Admin,
         exact: true,
         auth: true
+    },
+    {
+        path: '/login',
+        component: Login,
+        exact: true
     }
 ];
 
 export const Routes = () => (
     <Switch>
         {routeArray.map(route => (
-            <Route {...route} />
+            <Route key={route.path} {...route} />
         ))}
     </Switch>
 );
