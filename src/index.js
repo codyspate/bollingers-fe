@@ -7,18 +7,24 @@ import { Navbar } from './base';
 import { Routes } from './routes';
 import './index.css';
 import './shared/fonts/muggle/stylesheet.css';
+import Middleware from './base/middleware';
 import * as serviceWorker from './serviceWorker';
 
-const App = () => (
-    <Provider store={store}>
-        <div className="appWrapper">
-            <Navbar />
-            <Router>
-                <Routes />
-            </Router>
-        </div>
-    </Provider>
-);
+class App extends React.Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <div className="appWrapper">
+                    <Middleware />
+                    <Navbar />
+                    <Router>
+                        <Routes />
+                    </Router>
+                </div>
+            </Provider>
+        );
+    }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
