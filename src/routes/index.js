@@ -15,7 +15,7 @@ const routeArray = [
     {
         path: '/admin',
         component: Admin,
-        exact: true,
+        exact: false,
         admin: true
     },
     {
@@ -25,16 +25,11 @@ const routeArray = [
     }
 ];
 
-const AdminRoute = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={props => {
-            console.log(store.getState());
-            if (store.getState().user.user) return <Component {...props} />;
-            return <Home />;
-        }}
-    />
-);
+const AdminRoute = props => {
+    if (!store.getState().user.user)
+        return <Route {...props} component={Home} />;
+    return <Route {...props} />;
+};
 
 class RoutesComponent extends React.Component {
     constructor(props) {
@@ -58,11 +53,14 @@ class RoutesComponent extends React.Component {
         if (!this.state.loading || !this.state.loaded) return null;
         return (
             <Switch>
-                {routeArray.map(({ admin, ...route }) =>
+                {routeArray.map(({ admin, ...route }, i) =>
                     !admin ? (
                         <Route key={route.path} {...route} />
                     ) : (
-                        <AdminRoute key={`admin-${route.path}`} {...route} />
+                        <AdminRoute
+                            key={`admin-${route.path}-${i}`}
+                            {...route}
+                        />
                     )
                 )}
             </Switch>
@@ -76,5 +74,9 @@ const mapDispatchToProps = dispatch =>
 
 export const Routes = connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
+    null,
+    {
+        pure: false
+    }
 )(RoutesComponent);
