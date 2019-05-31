@@ -32,7 +32,7 @@ class Invitation extends React.Component {
     onChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
-    onChangeGuest = (e, index) => {
+    onChangeGuest = index => e => {
         const { target: { name, value } = {} } = e;
         this.setState(({ guests }) => {
             if (!Array.isArray(guests) || !guests.length)
@@ -67,7 +67,11 @@ class Invitation extends React.Component {
         const { guestCount, additionalGuests } = this.state;
         return (
             <div>
-                <Content onSubmit={this.onSubmit} method="POST">
+                <Content
+                    onSubmit={this.onSubmit}
+                    method="POST"
+                    autoComplete="off"
+                >
                     <Typography variant="h4" className="mb-3">
                         New Invitation
                     </Typography>
@@ -95,7 +99,7 @@ class Invitation extends React.Component {
                     {Array(guestCount)
                         .fill(1)
                         .map((_, i) => (
-                            <React.Fragment>
+                            <React.Fragment key={`guest-add-${i}`}>
                                 <Typography>
                                     Guest {guestCount > 1 ? i + 1 : ''}
                                 </Typography>
@@ -105,7 +109,7 @@ class Invitation extends React.Component {
                                         name={`firstName`}
                                         type="text"
                                         autoComplete="off"
-                                        onChange={e => this.onChangeGuest(e, i)}
+                                        onChange={this.onChangeGuest(i)}
                                         className="mr-1 flex-grow-1"
                                         value={this.state[`guest-first-${i}`]}
                                     />
@@ -114,7 +118,7 @@ class Invitation extends React.Component {
                                         name={`lastName`}
                                         type="text"
                                         autoComplete="off"
-                                        onChange={e => this.onChangeGuest(e, i)}
+                                        onChange={this.onChangeGuest(i)}
                                         className="ml-1 flex-grow-1"
                                         value={this.state[`guest-last-${i}`]}
                                     />
@@ -127,7 +131,7 @@ class Invitation extends React.Component {
                             label="Additional Guests"
                             name="additionalGuests"
                             type="number"
-                            min="0"
+                            inputProps={{ min: '0', step: '1' }}
                             autoComplete="off"
                             onChange={this.onChange}
                             margin="normal"
