@@ -1,18 +1,20 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 import styled from 'styled-components';
-import { createInvitation } from './api';
+import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as invitationActions from '../../../../shared/state/actions/invitation';
+import Incrementor from '../../../../shared/components/incrementor';
 
 const Content = styled.form`
     display: flex;
     flex-direction: column;
     flex-basis: 400px;
-    padding: 32px;
+    max-width: 800px;
+    margin: auto;
 `;
 
 const Flex = styled.div`
@@ -28,11 +30,12 @@ class Invitation extends React.Component {
             additionalGuests: 0,
             guests: []
         };
+        this.onChangeGuestCount = this.onChangeGuestCount.bind(this);
     }
     onChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
-    onChangeGuest = index => e => {
+    onChangeGuest = (e, index) => {
         const { target: { name, value } = {} } = e;
         this.setState(({ guests }) => {
             if (!Array.isArray(guests) || !guests.length)
@@ -43,30 +46,31 @@ class Invitation extends React.Component {
                 };
             return {
                 guests: guests.map((guest, i) => {
-                    console.log(guests, guests.length, index, i);
                     if (i === index) return { ...guest, [name]: value };
                     return guest;
                 })
             };
         });
     };
-    onChangeGuestCount = num => {
+    onChangeGuestCount(num) {
         this.setState(({ guestCount }) => ({
             guestCount: guestCount + num
         }));
-    };
-    onSubmit = e => {
+    }
+    onSubmit = async e => {
         e.preventDefault();
+        const { newInvitation } = this.props;
         const { guests, additionalGuests } = this.state;
-        createInvitation({
+        await newInvitation({
             guests,
             additionalGuests
         });
+        toast('Invitation Created Successfully!');
     };
     render() {
         const { guestCount, additionalGuests } = this.state;
         return (
-            <div>
+            <div className="py-4">
                 <Content
                     onSubmit={this.onSubmit}
                     method="POST"
@@ -75,27 +79,11 @@ class Invitation extends React.Component {
                     <Typography variant="h4" className="mb-3">
                         New Invitation
                     </Typography>
-                    <Flex justify="flex-end">
-                        {guestCount > 1 ? (
-                            <Fab
-                                size="small"
-                                onClick={() => this.onChangeGuestCount(-1)}
-                                margin="normal"
-                                className="mr-1"
-                            >
-                                <RemoveIcon />
-                            </Fab>
-                        ) : null}
-                        <Fab
-                            size="small"
-                            onClick={() => this.onChangeGuestCount(1)}
-                            margin="normal"
-                            color="primary"
-                            className="ml-1"
-                        >
-                            <AddIcon />
-                        </Fab>
-                    </Flex>
+                    <Incrementor
+                        onAdd={() => this.onChangeGuestCount(1)}
+                        onRemove={() => this.onChangeGuestCount(-1)}
+                        hideRemove={guestCount <= 1}
+                    />
                     {Array(guestCount)
                         .fill(1)
                         .map((_, i) => (
@@ -109,7 +97,7 @@ class Invitation extends React.Component {
                                         name={`firstName`}
                                         type="text"
                                         autoComplete="off"
-                                        onChange={this.onChangeGuest(i)}
+                                        onChange={e => this.onChangeGuest(e, i)}
                                         className="mr-1 flex-grow-1"
                                         value={this.state[`guest-first-${i}`]}
                                     />
@@ -118,14 +106,13 @@ class Invitation extends React.Component {
                                         name={`lastName`}
                                         type="text"
                                         autoComplete="off"
-                                        onChange={this.onChangeGuest(i)}
+                                        onChange={e => this.onChangeGuest(e, i)}
                                         className="ml-1 flex-grow-1"
                                         value={this.state[`guest-last-${i}`]}
                                     />
                                 </Flex>
                             </React.Fragment>
                         ))}
-
                     <Flex>
                         <TextField
                             label="Additional Guests"
@@ -153,4 +140,15 @@ class Invitation extends React.Component {
     }
 }
 
-export default Invitation;
+const mapStateToProps = state => ({ ...state.invitations });
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(invitationActions, dispatch);
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    {
+        pure: false
+    }
+)(Invitation);

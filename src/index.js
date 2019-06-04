@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import store from './shared/state/store';
 import { Navbar } from './base';
 import { Routes } from './routes';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import './shared/fonts/muggle/stylesheet.css';
 import Middleware from './base/middleware';
@@ -17,6 +19,7 @@ class App extends React.Component {
                 <div className="appWrapper">
                     <Middleware />
                     <Navbar />
+                    <ToastContainer />
                     <Router>
                         <Routes />
                     </Router>

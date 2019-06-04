@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { client } from '../../utils';
+import { client } from '../utils';
 
 export const SignIn = async ({ email, password }) => {
     const mutation = gql`

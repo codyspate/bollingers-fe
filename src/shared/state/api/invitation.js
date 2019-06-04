@@ -12,6 +12,7 @@ export const getInvitations = async () => {
                     lastName
                     mealOption
                     songRecommendation
+                    attending
                 }
                 guestCount
                 additionalGuests
@@ -22,4 +23,46 @@ export const getInvitations = async () => {
         query
     });
     return invitations;
+};
+
+export const updateAttendingStatus = async ({ guestId, attending }) => {
+    const mutation = gql`
+        mutation guest($id: String!, $updateFields: InputGuest2) {
+            guest(id: $id, updateFields: $updateFields) {
+                _id
+                attending
+            }
+        }
+    `;
+    const { data: { guest } = {} } = await client.mutate({
+        mutation,
+        variables: {
+            id: guestId,
+            updateFields: { attending }
+        }
+    });
+    return guest;
+};
+
+export const createInvitation = async ({ guests, additionalGuests }) => {
+    const mutation = gql`
+        mutation($guests: [InputGuest]!, $additionalGuests: Int) {
+            invitation(guests: $guests, additionalGuests: $additionalGuests) {
+                guests {
+                    firstName
+                    lastName
+                }
+                guestCount
+                additionalGuests
+            }
+        }
+    `;
+    const data = await client.mutate({
+        mutation,
+        variables: {
+            guests,
+            additionalGuests
+        }
+    });
+    return data;
 };

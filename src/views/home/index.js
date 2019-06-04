@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import css from './home.module.css';
-import { Container } from '../../shared/components';
 import TopImage from '../../shared/img/pointing.jpg';
+import Rsvp from './components/rsvp/index';
 
-const Image = styled.img`
-    position: absolute;
-    z-index: -1;
-`;
-
-const Half = styled.div`
-    display: flex;
-    flex-basis: 50% auto;
-    padding: 1rem;
+const Content = styled.div`
+    padding: 64px 0;
+    background-image: ${props => props.backgroundImage};
+    background-position: center;
+    background-size: ${props => props.backgroundSize || 'cover'};
+    /* @media only screen and (max-width: 600px) {
+    } */
 `;
 
 const TopSection = styled.div`
@@ -32,24 +30,32 @@ const TopSection = styled.div`
     }
 `;
 const Home = props => {
-    console.log(props, 'home props');
     return (
-        <div className={css.topSection}>
-            <Image
-                className={css.topSectionImage}
-                src={TopImage}
-                alt="Madi and Aaron Pointing"
-            />
-            <Container>
-                <Half>
-                    <TopSection className={css.topSectionContent}>
-                        <h1>Aaron and Madi</h1>
-                        <p>November 30, 2019</p>
-                        <p>Clovis, CA</p>
-                    </TopSection>
-                </Half>
-            </Container>
-        </div>
+        <React.Fragment>
+            <Content
+                backgroundImage={`url("${TopImage}")`}
+                className={css.topSection}
+            >
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-md-6 mb-3">
+                            <TopSection className={css.topSectionContent}>
+                                <h1>Aaron and Madi</h1>
+                                <p>November 30, 2019</p>
+                                <p>Clovis, CA</p>
+                            </TopSection>
+                        </div>
+                    </div>
+                </div>
+            </Content>
+            <div className="container py-3">
+                <div className="row justify-content-end">
+                    <div className="col-12 col-md-6">
+                        <Rsvp />
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
     );
 };
 
