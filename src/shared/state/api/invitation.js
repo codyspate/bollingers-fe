@@ -61,7 +61,7 @@ export const createInvitation = async ({ guests, additionalGuests }) => {
         mutation,
         variables: {
             guests,
-            additionalGuests
+            additionalGuests: parseInt(additionalGuests)
         }
     });
     return data;

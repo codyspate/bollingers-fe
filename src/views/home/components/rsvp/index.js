@@ -26,8 +26,9 @@ class Rsvp extends React.Component {
 
     render() {
         const { firstName, lastName } = this.state;
+        const { className } = this.props;
         return (
-            <Paper className="p-3">
+            <Paper className={`p-3 ${className}`}>
                 <Typography variant="display1" align="center">
                     RSVP
                 </Typography>
@@ -35,7 +36,7 @@ class Rsvp extends React.Component {
                     Type in your name to get started!
                 </Typography>
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12">
                         <TextField
                             name="firstName"
                             value={firstName}
@@ -45,7 +46,7 @@ class Rsvp extends React.Component {
                             className="mr-1 flex-grow-1 w-100"
                         />
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12">
                         <TextField
                             name="lastname"
                             value={lastName}

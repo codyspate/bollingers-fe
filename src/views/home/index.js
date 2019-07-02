@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import css from './home.module.css';
 import TopImage from '../../shared/img/pointing.jpg';
 import Rsvp from './components/rsvp/index';
+import Rules from './components/rules';
+import Paper from '@material-ui/core/Paper';
+import OneImage from '../../shared/img/IMG_2346.JPG';
+import TwoImage from '../../shared/img/IMG_2385.JPG';
+import ThreeImage from '../../shared/img/IMG_2317.JPG';
+import Image from '../../shared/components/image';
 
 const Content = styled.div`
     padding: 64px 0;
@@ -50,7 +56,14 @@ const Home = props => {
             </Content>
             <div className="container py-3">
                 <div className="row justify-content-end">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
+                        <Image src={OneImage} />
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <Image src={ThreeImage} />
+                    </div>
+                    <div className="col-12 col-md-4">
+                        <Rules className="mb-4" />
                         <Rsvp />
                     </div>
                 </div>
