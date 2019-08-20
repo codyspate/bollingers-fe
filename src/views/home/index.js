@@ -4,6 +4,7 @@ import css from './home.module.css';
 import TopImage from '../../shared/img/pointing.jpg';
 import Rsvp from './components/rsvp/index';
 import Rules from './components/rules';
+import Registry from './components/registry';
 import Paper from '@material-ui/core/Paper';
 import OneImage from '../../shared/img/IMG_2346.JPG';
 import TwoImage from '../../shared/img/IMG_2385.JPG';
@@ -59,12 +60,13 @@ const Home = props => {
                     <div className="col-12 col-md-4">
                         <Image src={OneImage} />
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-md-4 mb-4">
                         <Image src={ThreeImage} />
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-md-4 order-first order-md-last">
+                        <Registry className="mb-4" />
                         <Rules className="mb-4" />
-                        <Rsvp />
+                        {/* <Rsvp /> */}
                     </div>
                 </div>
             </div>
