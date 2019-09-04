@@ -51,13 +51,16 @@ export const eraseCookie = name => {
     document.cookie = name + '=; Max-Age=-99999999;';
 };
 
-export const debounce = (fn, time) => {
-    let timeout;
+export function debounce(f, interval) {
+    let timer = null;
 
-    return function() {
-        const functionCall = () => fn.apply(this, arguments);
-
-        clearTimeout(timeout);
-        timeout = setTimeout(functionCall, time);
+    return (...args) => {
+        clearTimeout(timer);
+        return new Promise(resolve => {
+            timer = setTimeout(async () => {
+                const result = await f(...args);
+                resolve(result);
+            }, interval);
+        });
     };
-};
+}

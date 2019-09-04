@@ -5,27 +5,51 @@ import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as invitationActions from '../../../../shared/state/actions/invitation';
+import styled from 'styled-components';
 import { debounce } from '../../../../shared/state/utils';
 import { search } from './api';
+
+const Suggestion = styled.a`
+    display: block;
+    padding: 1rem 0.5rem;
+    margin: 0.5rem;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        border: none;
+        box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
+    }
+`;
 
 class Rsvp extends React.Component {
     constructor() {
         super();
         this.state = {
             firstName: '',
-            lastName: ''
+            lastName: '',
+            suggestions: []
         };
     }
     onChange = e => {
         const { firstName, lastName } = this.state;
-        console.log();
         const newVal = { [e.target.name]: e.target.value };
-        this.setState(newVal);
-        debounce(search({ firstName, lastName, ...newVal }), 600);
+        this.setState(newVal, async () => {
+            debounce(search, 600)({
+                firstName,
+                lastName,
+                ...newVal
+            }).then(data => {
+                this.setState({
+                    suggestions: Array.isArray(data) ? data : []
+                });
+            });
+        });
+        // const names = debounce(search({ firstName, lastName, ...newVal }), 600);
     };
 
     render() {
-        const { firstName, lastName } = this.state;
+        const { firstName, lastName, suggestions } = this.state;
         const { className } = this.props;
         return (
             <Paper className={`p-3 ${className}`}>
@@ -48,13 +72,32 @@ class Rsvp extends React.Component {
                     </div>
                     <div className="col-12">
                         <TextField
-                            name="lastname"
+                            name="lastName"
                             value={lastName}
                             label="Last Name"
                             onChange={this.onChange}
                             margin="normal"
                             className="ml-1 flex-grow-1 w-100"
                         />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        {suggestions.map(item => {
+                            return (
+                                <div key={item._id} className="row">
+                                    <div className="col-12">
+                                        <Suggestion
+                                            href={`/invitation/${item._id}`}
+                                        >
+                                            <span>{`${item.firstName ||
+                                                ''} ${item.lastName ||
+                                                ''}`}</span>
+                                        </Suggestion>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </Paper>

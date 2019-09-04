@@ -25,11 +25,12 @@ const Flex = styled.div`
 class Invitation extends React.Component {
     constructor() {
         super();
-        this.state = {
+        this.initialState = {
             guestCount: 1,
             additionalGuests: 0,
             guests: []
         };
+        this.state = { ...this.initialState };
         this.onChangeGuestCount = this.onChangeGuestCount.bind(this);
     }
     onChange = e => {

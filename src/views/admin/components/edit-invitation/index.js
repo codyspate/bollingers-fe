@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as userActions from '../../../../shared/state/actions/user';
 import Typography from '@material-ui/core/Typography';
 import Incrementor from '../../../../shared/components/incrementor';
 
@@ -11,15 +14,24 @@ const Content = styled.form`
     margin: auto;
 `;
 
-const EditInvitation = ({ match }) => (
+const EditInvitation = ({ match, user }) => (
     <Content className="py-4">
         <Typography variant="h4">Edit Invitation</Typography>
-        <div className="row">
-            <div className="col-12 justify-content-end">
-                <Incrementor />
+        {user ? (
+            <div className="row">
+                <div className="col-12 justify-content-end">
+                    <Incrementor />
+                </div>
             </div>
-        </div>
+        ) : null}
     </Content>
 );
 
-export default EditInvitation;
+const mapStateToProps = state => ({ ...state.user });
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(userActions, dispatch);
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EditInvitation);

@@ -36,6 +36,14 @@ const Rules = ({ className }) => {
             <div className="d-flex flex-row">
                 <Done className="mr-1" />
 
+                <Typography variant="body1">
+                    Transportation will be provided from the ceremony to the
+                    reception
+                </Typography>
+            </div>
+            <div className="d-flex flex-row">
+                <Done className="mr-1" />
+
                 <Typography variant="body1">Take lots of pictures</Typography>
             </div>
             <div className="d-flex flex-row">

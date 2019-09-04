@@ -25,6 +25,27 @@ export const getInvitations = async () => {
     return invitations;
 };
 
+export const getGuests = async ({ firstName, lastName }) => {
+    const query = gql`
+        query guests($firstName: String, $lastName: String) {
+            guests(firstName: $firstName, lastName: $lastName) {
+                _id
+                firstName
+                lastName
+            }
+        }
+    `;
+
+    const { data: { guests } = {} } = await client.query({
+        query,
+        variables: {
+            firstName,
+            lastName
+        }
+    });
+    return guests;
+};
+
 export const updateAttendingStatus = async ({ guestId, attending }) => {
     const mutation = gql`
         mutation guest($id: String!, $updateFields: InputGuest2) {
