@@ -21,7 +21,7 @@ const Content = styled.div`
 `;
 
 const TopSection = styled.div`
-    font-family: 'mugglenewsregular';
+    font-family: Northwell;
     background-color: rgba(93, 109, 91, 0.79);
     color: #fff;
     padding: 1.5rem;
@@ -30,27 +30,60 @@ const TopSection = styled.div`
         text-align: center;
     }
     & h1 {
-        font-size: 2.8rem;
+        font-size: 4.8rem;
     }
     & p {
-        font-size: 2rem;
+        font-size: 3rem;
     }
+    .bold {
+        font-weight: bold;
+    }
+    & span {
+        font-size: 2rem;
+        display: block;
+        &.big {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+    }
+`;
+
+const ImageWrapper = styled.div`
+    background-image: url(${TopImage});
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    border-radius: 16px;
 `;
 const Home = props => {
     return (
         <React.Fragment>
             <Content
-                backgroundImage={`url("${TopImage}")`}
+                // backgroundImage={`url("${TopImage}")`}
                 className={css.topSection}
             >
                 <div className="container">
                     <div className="row">
                         <div className="col-12 col-md-6 mb-3">
                             <TopSection className={css.topSectionContent}>
-                                <h1>Aaron and Madi</h1>
-                                <p>November 30, 2019</p>
-                                <p>Clovis, CA</p>
+                                <h1 className="bold">Aaron and Madi</h1>
+                                <span>November 30, 2019</span>
+                                <span className="pb-5">Clovis, CA</span>
+                                <span className="big">Ceremony</span>
+                                <span>3:30pm Mercedes Edwards Theatre</span>
+                                <span className="big">Reception</span>
+                                <span>
+                                    4:30 - 10:30pm Classic Catering at 625
+                                </span>
                             </TopSection>
+                        </div>
+                        <div className="col-12 col-md-6 mb-3">
+                            <ImageWrapper>
+                                {/* <img
+                                    src={TopImage}
+                                    alt="Madi and Aaron pointing"
+                                /> */}
+                            </ImageWrapper>
                         </div>
                     </div>
                 </div>
@@ -64,9 +97,9 @@ const Home = props => {
                         <Image src={ThreeImage} />
                     </div>
                     <div className="col-12 col-md-4 order-first order-md-last">
+                        <Rsvp className="mb-4" />
                         <Registry className="mb-4" />
                         <Rules className="mb-4" />
-                        {/* <Rsvp /> */}
                     </div>
                 </div>
             </div>

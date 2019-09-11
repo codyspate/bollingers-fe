@@ -16,9 +16,13 @@ const Suggestion = styled.a`
     box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    color: #353535;
     &:hover {
+        transform: scale(1.01);
+        color: #353535;
         border: none;
         box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
+        text-decoration: none;
     }
 `;
 

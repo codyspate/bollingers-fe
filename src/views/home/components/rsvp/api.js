@@ -19,6 +19,5 @@ export const search = async ({ firstName, lastName }) => {
             lastName
         }
     });
-    console.log('hit');
     return guests;
 };

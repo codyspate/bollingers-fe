@@ -26,13 +26,13 @@ const Rules = ({ className }) => {
                 <Done className="mr-1" />
                 <Typography variant="body1">Adult only event</Typography>
             </div>
-            <div className="d-flex flex-row">
+            {/* <div className="d-flex flex-row">
                 <Done className="mr-1" />
 
                 <Typography variant="body1">
                     The ceremony and reception are within walking distance
                 </Typography>
-            </div>
+            </div> */}
             <div className="d-flex flex-row">
                 <Done className="mr-1" />
 

@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Home, Admin, Login } from '../views';
+import EditInvitation from '../views/admin/components/edit-invitation';
 import store from '../shared/state/store';
 import * as userActions from '../shared/state/actions/user';
 
@@ -21,6 +22,11 @@ const routeArray = [
     {
         path: '/login',
         component: Login,
+        exact: true
+    },
+    {
+        path: '/invitation/:guestId',
+        component: EditInvitation,
         exact: true
     }
 ];

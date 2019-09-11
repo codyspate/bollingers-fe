@@ -25,6 +25,31 @@ export const getInvitations = async () => {
     return invitations;
 };
 
+export const getInvitation = async ({ id, guestId }) => {
+    const query = gql`
+        query($id: String, $guestId: String) {
+            invitation(id: $id, guestId: $guestId) {
+                _id
+                guests {
+                    _id
+                    firstName
+                    lastName
+                    mealOption
+                    songRecommendation
+                    attending
+                }
+                guestCount
+                additionalGuests
+            }
+        }
+    `;
+    const { data: { invitation } = {} } = await client.query({
+        query,
+        variables: { id, guestId }
+    });
+    return invitation;
+};
+
 export const getGuests = async ({ firstName, lastName }) => {
     const query = gql`
         query guests($firstName: String, $lastName: String) {

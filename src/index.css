@@ -4,6 +4,9 @@ html,
 .appWrapper {
     height: 100%;
 }
+html {
+    height: auto;
+}
 
 body {
     margin: 0;
