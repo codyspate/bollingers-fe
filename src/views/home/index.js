@@ -56,11 +56,11 @@ const ImageWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-    background-image: url(${SunFlower});
+    background: url(${SunFlower}) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
 `;
 const Home = props => {
     return (

@@ -46,10 +46,16 @@ const Rules = ({ className }) => {
 
                 <Typography variant="body1">Take lots of pictures</Typography>
             </div>
-            <div className="d-flex flex-row">
+            <div className="d-flex flex-row mb-4">
                 <Done className="mr-1" />
 
                 <Typography variant="body1">Have fun!</Typography>
+            </div>
+            <div className="text-center">
+                <p>Questions, comments, concerns?</p>
+                <a href="mailto:contact@meetthebollingers.com">
+                    contact@meetthebollingers.com
+                </a>
             </div>
         </Paper>
     );
