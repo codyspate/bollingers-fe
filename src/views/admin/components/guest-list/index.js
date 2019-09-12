@@ -66,7 +66,7 @@ const GuestList = ({
                                         {guest.firstName}
                                     </TableCell>
                                     <TableCell>{guest.lastName}</TableCell>
-                                    <TableCell>{guest.mealOption}</TableCell>
+                                    <TableCell>{guest.mealChoice}</TableCell>
                                     <TableCell>
                                         {guest.songRecommendation}
                                     </TableCell>

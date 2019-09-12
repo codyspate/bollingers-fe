@@ -10,7 +10,7 @@ export const SignIn = ({ email, password } = {}) => async dispatch => {
         dispatch({ type: Types.SET_AUTH_TOKEN, payload: token });
         setCookie(TOKEN_NAME, token, 60);
     } catch (e) {
-        console.log('SignIn Error', e);
+        // console.log('SignIn Error', e);
     } finally {
         dispatch({ type: Types.SET_LOADING_USER, payload: false });
     }

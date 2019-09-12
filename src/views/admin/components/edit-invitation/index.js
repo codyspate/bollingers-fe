@@ -4,55 +4,93 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../../../shared/state/actions/user';
 import Typography from '@material-ui/core/Typography';
-import Incrementor from '../../../../shared/components/incrementor';
+
 import {
     getInvitation,
-    updateAttendingStatus
+    updateAttendingStatus,
+    updateGuest,
+    addGuest
 } from '../../../../shared/state/api/invitation';
 import Guest from './guest-card';
 
-const Content = styled.form`
-    display: flex;
-    flex-direction: column;
-    flex-basis: 400px;
-    max-width: 800px;
-    margin: auto;
+const Container = styled.form`
+    background-color: #fff;
 `;
 
 const EditInvitation = ({ match = {}, user }) => {
     const { params: { guestId } = {} } = match;
     const [invitation, setInvitation] = useState({});
+    const [guests, setGuests] = useState();
+    const [additionalGuests, setAdditionalGuests] = useState();
+
     const fetchData = async () => {
         const inv = await getInvitation({ guestId });
         setInvitation(inv);
+        updateGuestComponents(inv);
     };
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, invitation.guests);
 
     const updateStatus = async ({ guestId, attending }) => {
         await updateAttendingStatus({ guestId, attending });
         fetchData();
     };
 
-    const guests = Array.isArray(invitation.guests)
-        ? invitation.guests.map(g => (
-              <Guest updateAttending={updateStatus} key={g._id} guest={g} />
-          ))
-        : null;
+    const updateGuestInfo = async (guestId, updateObj) => {
+        await updateGuest(guestId, updateObj);
+        fetchData();
+    };
+
+    const createGuest = async guestObj => {
+        if (!invitation._id) return;
+        await addGuest(invitation._id, guestObj, true);
+        fetchData();
+    };
+
+    const updateGuestComponents = inv => {
+        console.log('updating...', inv);
+        const g = Array.isArray(inv.guests)
+            ? inv.guests.map(g => (
+                  <Guest
+                      updateGuestInfo={updateGuestInfo}
+                      updateAttending={updateStatus}
+                      key={g._id}
+                      guest={g}
+                  />
+              ))
+            : null;
+        setGuests(g);
+        const aG = inv.additionalGuests
+            ? new Array(inv.additionalGuests || 0)
+                  .fill(1)
+                  .map((a, i) => (
+                      <Guest
+                          additional
+                          addGuest={createGuest}
+                          key={`additionalGuest_${i}`}
+                      />
+                  ))
+            : null;
+        setAdditionalGuests(aG);
+    };
     return (
-        <div className="container py-4">
+        <Container className="container py-4">
             <Typography variant="h4">Edit Invitation</Typography>
-            {user ? (
+            {/* {user ? (
                 <div className="row">
                     <div className="col-12 justify-content-end">
                         <Incrementor />
                     </div>
                 </div>
+            ) : null} */}
+            <div className="mb-4">{guests}</div>
+            {additionalGuests ? (
+                <Typography variant="h5">Additional Guests</Typography>
             ) : null}
-            {guests}
-        </div>
+            {additionalGuests}
+        </Container>
     );
 };
 

@@ -5,11 +5,10 @@ import TopImage from '../../shared/img/pointing.jpg';
 import Rsvp from './components/rsvp/index';
 import Rules from './components/rules';
 import Registry from './components/registry';
-import Paper from '@material-ui/core/Paper';
 import OneImage from '../../shared/img/IMG_2346.JPG';
-import TwoImage from '../../shared/img/IMG_2385.JPG';
 import ThreeImage from '../../shared/img/IMG_2317.JPG';
 import Image from '../../shared/components/image';
+import SunFlower from '../../shared/img/sun-flower.jpg';
 
 const Content = styled.div`
     padding: 64px 0;
@@ -21,8 +20,8 @@ const Content = styled.div`
 `;
 
 const TopSection = styled.div`
-    font-family: Northwell;
-    background-color: rgba(93, 109, 91, 0.79);
+    font-family: 'Northwell Alt';
+    background-color: rgba(93, 109, 91, 0.95);
     color: #fff;
     padding: 1.5rem;
     border-radius: 16px;
@@ -55,9 +54,17 @@ const ImageWrapper = styled.div`
     height: 100%;
     border-radius: 16px;
 `;
+
+const Wrapper = styled.div`
+    background-image: url(${SunFlower});
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+`;
 const Home = props => {
     return (
-        <React.Fragment>
+        <Wrapper>
             <Content
                 // backgroundImage={`url("${TopImage}")`}
                 className={css.topSection}
@@ -103,7 +110,7 @@ const Home = props => {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </Wrapper>
     );
 };
 

@@ -5,7 +5,11 @@ import * as userActions from '../../shared/state/actions/user';
 
 class Middleware extends React.Component {
     componentDidMount() {
-        this.props.SignIn();
+        try {
+            this.props.SignIn();
+        } catch (e) {
+            // pass
+        }
     }
     render() {
         return null;

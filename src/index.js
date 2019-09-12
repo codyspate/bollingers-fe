@@ -9,23 +9,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import './shared/fonts/muggle/stylesheet.css';
+import './shared/fonts/northwell/stylesheet.css';
 import Middleware from './base/middleware';
 import * as serviceWorker from './serviceWorker';
-import SunFlower from './shared/img/sun-flower.jpg';
-import styled from 'styled-components';
 
-const Wrapper = styled.div`
-    background-image: url(${SunFlower});
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-`;
 class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <Wrapper className="appWrapper">
+                <div className="appWrapper">
                     <Middleware />
                     <ToastContainer />
                     <Router>
@@ -34,7 +26,7 @@ class App extends React.Component {
                             <Routes />
                         </div>
                     </Router>
-                </Wrapper>
+                </div>
             </Provider>
         );
     }

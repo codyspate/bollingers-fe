@@ -10,7 +10,7 @@ export const getInvitations = async () => {
                     _id
                     firstName
                     lastName
-                    mealOption
+                    mealChoice
                     songRecommendation
                     attending
                 }
@@ -34,7 +34,7 @@ export const getInvitation = async ({ id, guestId }) => {
                     _id
                     firstName
                     lastName
-                    mealOption
+                    mealChoice
                     songRecommendation
                     attending
                 }
@@ -111,4 +111,67 @@ export const createInvitation = async ({ guests, additionalGuests }) => {
         }
     });
     return data;
+};
+
+export const updateGuest = async (guestId, updateObj) => {
+    const mutation = gql`
+        mutation($guestId: String!, $updateObj: InputGuest2) {
+            guest(id: $guestId, updateFields: $updateObj) {
+                _id
+                mealChoice
+            }
+        }
+    `;
+    try {
+        const { data: { guest } = {} } = await client.mutate({
+            mutation,
+            variables: {
+                guestId,
+                updateObj
+            }
+        });
+        console.log('updated guest', guest);
+        return guest;
+    } catch (e) {
+        console.error(e, 'Guest update error');
+    }
+};
+
+export const addGuest = async (invitationId, guest, removeAdditional) => {
+    const mutation = gql`
+        mutation(
+            $invitationId: ID
+            $guest: InputGuest
+            $removeAdditional: Boolean
+        ) {
+            addGuest(
+                invitationId: $invitationId
+                guest: $guest
+                removeAdditional: $removeAdditional
+            ) {
+                _id
+                guests {
+                    _id
+                    firstName
+                    lastName
+                    mealChoice
+                    songRecommendation
+                    attending
+                }
+                guestCount
+                additionalGuests
+            }
+        }
+    `;
+    const {
+        data: { addGuest }
+    } = await client.mutate({
+        mutation,
+        variables: {
+            invitationId,
+            guest,
+            removeAdditional
+        }
+    });
+    return addGuest;
 };
