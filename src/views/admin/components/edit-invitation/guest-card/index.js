@@ -195,7 +195,7 @@ const Guest = ({
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-4 pt-4 pt-md-0">
                     <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="meal">Meal Option</InputLabel>
                         <Select
