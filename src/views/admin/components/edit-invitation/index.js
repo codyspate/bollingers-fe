@@ -35,18 +35,18 @@ const EditInvitation = ({ match = {}, user }) => {
 
     const updateStatus = async ({ guestId, attending }) => {
         await updateAttendingStatus({ guestId, attending });
-        fetchData();
+        return fetchData();
     };
 
     const updateGuestInfo = async (guestId, updateObj) => {
         await updateGuest(guestId, updateObj);
-        fetchData();
+        return fetchData();
     };
 
     const createGuest = async guestObj => {
         if (!invitation._id) return;
         await addGuest(invitation._id, guestObj, true);
-        fetchData();
+        return fetchData();
     };
 
     const updateGuestComponents = inv => {

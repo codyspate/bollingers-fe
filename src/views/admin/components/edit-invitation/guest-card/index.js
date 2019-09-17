@@ -8,11 +8,39 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import posed from 'react-pose';
 
-const Box = styled.div`
+const posedP = posed.p({
+    visible: {
+        opacity: 1
+    },
+    hidden: {
+        opacity: 0
+    }
+});
+
+const P = styled(posedP)`
+    text-transform: uppercase;
+    color: #228422;
+    margin-bottom: 0;
+    font-weight: bold;
+`;
+
+const posedBox = posed.div({
+    normal: {
+        border: '1px solid #ececec',
+        'border-bottom': '1px solid #ececec'
+    },
+    success: {
+        border: '1px solid #ececec',
+        'border-bottom': '4px solid #228422'
+    }
+});
+
+const Box = styled(posedBox)`
     padding: 1rem;
     margin: 0.25rem;
-    border: 1px solid #ececec;
+    /* border: 1px solid #ececec; */
 `;
 
 const ChoiceBox = styled.button`
@@ -70,140 +98,162 @@ const Guest = ({
 }) => {
     if (!guest && !additional) return null;
     const [newGuest, setGuest] = React.useState({ additional: true });
+    const [saved, setSaved] = React.useState(false);
     return (
-        <Box className="row">
-            <div className="col-12 col-md-4">
-                {guest ? (
-                    <h4>
-                        {guest.firstName} {guest.lastName}
-                    </h4>
-                ) : (
-                    <div>
-                        <TextField
-                            id="first-name"
-                            label="First Name"
-                            className={classes.textField}
-                            value={newGuest.firstName || ''}
-                            onChange={e => {
-                                setGuest({
-                                    ...newGuest,
-                                    firstName: e.target.value
-                                });
-                            }}
-                            margin="normal"
-                        />
-                        <TextField
-                            id="last-name"
-                            label="Last Name"
-                            className={`${classes.textField} mb-4`}
-                            value={newGuest.lastName || ''}
-                            onChange={e => {
-                                setGuest({
-                                    ...newGuest,
-                                    lastName: e.target.value
-                                });
-                            }}
-                            margin="normal"
-                        />
-                    </div>
-                )}
-            </div>
-            <div className="col-12 col-md-4">
-                <div className="d-flex align-items-center">
-                    <span className="mr-2">Attending?</span>
-                    <div>
-                        <ChoiceBox
-                            left
-                            color="#bb593d"
-                            active={
-                                (guest && guest.attending === false) ||
-                                newGuest.attending === false
-                            }
-                            onClick={e => {
-                                e.preventDefault();
-                                if (guest)
-                                    return updateAttending({
-                                        guestId: guest && guest._id,
-                                        attending: false
+        <Box pose={saved ? 'success' : 'normal'}>
+            <div className="row">
+                <div className="col-12 col-md-4">
+                    {guest ? (
+                        <h4>
+                            {guest.firstName} {guest.lastName}
+                        </h4>
+                    ) : (
+                        <div>
+                            <TextField
+                                id="first-name"
+                                label="First Name"
+                                className={classes.textField}
+                                value={newGuest.firstName || ''}
+                                onChange={e => {
+                                    setGuest({
+                                        ...newGuest,
+                                        firstName: e.target.value
                                     });
-                                return setGuest({
-                                    ...newGuest,
-                                    attending: false
-                                });
-                            }}
-                        >
-                            No
-                        </ChoiceBox>
-                        <ChoiceBox
-                            right
-                            color="#228422"
-                            active={
-                                (guest && guest.attending === true) ||
-                                newGuest.attending === true
-                            }
-                            onClick={e => {
-                                e.preventDefault();
-                                if (guest)
-                                    return updateAttending({
-                                        guestId: guest && guest._id,
-                                        attending: true
+                                }}
+                                margin="normal"
+                            />
+                            <TextField
+                                id="last-name"
+                                label="Last Name"
+                                className={`${classes.textField} mb-4`}
+                                value={newGuest.lastName || ''}
+                                onChange={e => {
+                                    setGuest({
+                                        ...newGuest,
+                                        lastName: e.target.value
                                     });
-                                return setGuest({
-                                    ...newGuest,
-                                    attending: true
-                                });
-                            }}
-                        >
-                            Yes
-                        </ChoiceBox>
+                                }}
+                                margin="normal"
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className="col-12 col-md-4">
+                    <div className="d-flex align-items-center">
+                        <span className="mr-2">Attending?</span>
+                        <div>
+                            <ChoiceBox
+                                left
+                                color="#bb593d"
+                                active={
+                                    (guest && guest.attending === false) ||
+                                    newGuest.attending === false
+                                }
+                                onClick={async e => {
+                                    e.preventDefault();
+                                    if (guest) {
+                                        await updateAttending({
+                                            guestId: guest && guest._id,
+                                            attending: false
+                                        });
+                                        setSaved(true);
+                                        setTimeout(() => setSaved(false), 1500);
+                                    } else
+                                        return setGuest({
+                                            ...newGuest,
+                                            attending: false
+                                        });
+                                }}
+                            >
+                                No
+                            </ChoiceBox>
+                            <ChoiceBox
+                                right
+                                color="#228422"
+                                active={
+                                    (guest && guest.attending === true) ||
+                                    newGuest.attending === true
+                                }
+                                onClick={async e => {
+                                    e.preventDefault();
+                                    if (guest) {
+                                        await updateAttending({
+                                            guestId: guest && guest._id,
+                                            attending: true
+                                        });
+                                        setSaved(true);
+                                        setTimeout(() => setSaved(false), 1500);
+                                    } else
+                                        return setGuest({
+                                            ...newGuest,
+                                            attending: true
+                                        });
+                                }}
+                            >
+                                Yes
+                            </ChoiceBox>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="col-12 col-md-4">
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="meal">Meal Option</InputLabel>
-                    <Select
-                        value={
-                            (guest && guest.mealChoice) ||
-                            newGuest.mealChoice ||
-                            ''
-                        }
-                        inputProps={{ id: 'meal' }}
-                        onChange={e => {
-                            e.preventDefault();
-                            if (guest)
-                                return updateGuestInfo(guest && guest._id, {
-                                    mealChoice: e.target.value
-                                });
-                            return setGuest({
-                                ...newGuest,
-                                mealChoice: e.target.value
-                            });
+                <div className="col-12 col-md-4">
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="meal">Meal Option</InputLabel>
+                        <Select
+                            value={
+                                (guest && guest.mealChoice) ||
+                                newGuest.mealChoice ||
+                                ''
+                            }
+                            inputProps={{ id: 'meal' }}
+                            onChange={async e => {
+                                e.preventDefault();
+                                if (guest) {
+                                    await updateGuestInfo(guest && guest._id, {
+                                        mealChoice: e.target.value
+                                    });
+                                    setSaved(true);
+                                    setTimeout(() => setSaved(false), 1500);
+                                } else
+                                    return setGuest({
+                                        ...newGuest,
+                                        mealChoice: e.target.value
+                                    });
+                            }}
+                        >
+                            <MenuItem value="nonVegan">Non-Vegan</MenuItem>
+                            <MenuItem value="vegan">Vegan</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+                {additional ? (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={async e => {
+                            console.log('hit');
+                            // e.preventDefault();
+                            if (newGuest.firstName || newGuest.lastName) {
+                                await addGuest(newGuest);
+                                setSaved(true);
+                                setTimeout(() => setSaved(false), 1500);
+                            } else alert('Please add your guests name.');
                         }}
                     >
-                        <MenuItem value="nonVegan">Non-Vegan</MenuItem>
-                        <MenuItem value="vegan">Vegan</MenuItem>
-                    </Select>
-                </FormControl>
+                        Save
+                    </Button>
+                ) : null}
             </div>
-            {additional ? (
-                // <form>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={e => {
-                        console.log('hit');
-                        // e.preventDefault();
-                        if (newGuest.firstName || newGuest.lastName)
-                            addGuest(newGuest);
-                        else alert('Please add your guests name.');
-                    }}
-                >
-                    Save
-                </Button>
-            ) : // </form>
-            null}
+            <div className="row">
+                <div className="col">
+                    <P
+                        className="pt-2 pt-md-0"
+                        pose={saved ? 'visible' : 'hidden'}
+                    >
+                        Saved
+                    </P>
+                </div>
+            </div>
         </Box>
     );
 };
