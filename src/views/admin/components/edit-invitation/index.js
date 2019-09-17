@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../../../../shared/state/actions/user';
 import Typography from '@material-ui/core/Typography';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 
 import {
     getInvitation,
@@ -15,6 +17,13 @@ import Guest from './guest-card';
 
 const Container = styled.form`
     background-color: #fff;
+`;
+
+const Thanks = styled.div`
+    color: #228422;
+    h6 {
+        color: #228422;
+    }
 `;
 
 const EditInvitation = ({ match = {}, user }) => {
@@ -75,16 +84,32 @@ const EditInvitation = ({ match = {}, user }) => {
             : null;
         setAdditionalGuests(aG);
     };
+    console.log(
+        invitation,
+        invitation &&
+            Array.isArray(invitation.guests) &&
+            invitation.guests.filter(
+                g => g.attending !== undefined && g.attending !== null
+            ).length === invitation.guests.length
+    );
     return (
         <Container className="container py-4">
             <Typography variant="h4">Edit Invitation</Typography>
-            {/* {user ? (
-                <div className="row">
-                    <div className="col-12 justify-content-end">
-                        <Incrementor />
-                    </div>
-                </div>
-            ) : null} */}
+            {invitation &&
+            Array.isArray(invitation.guests) &&
+            invitation.guests.filter(
+                g =>
+                    g.attending !== undefined &&
+                    g.attending !== null &&
+                    g.mealChoice
+            ).length === invitation.guests.length ? (
+                <Thanks className="d-flex mr-4 align-items-center">
+                    <FontAwesomeIcon icon={faCheckCircle} size="3x" />
+                    <Typography className="ml-2" variant="h6">
+                        All done! Thanks for the RSVP!
+                    </Typography>
+                </Thanks>
+            ) : null}
             <div className="mb-4">{guests}</div>
             {additionalGuests ? (
                 <Typography variant="h5">Additional Guests</Typography>
